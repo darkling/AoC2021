@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+
+with open("input.txt", "r") as inf, \
+     open("data.asm", "w") as ouf:
+    ouf.write(":data\n")
+    data = []
+    for line in inf:
+        data.append(line.strip())
+        if len(data) >= 12:
+            ouf.write("    word ")
+            ouf.write(", ".join(data))
+            ouf.write("\n")
+            data = []
+
+    ouf.write("    word ")
+    ouf.write(", ".join(data))
+    ouf.write("\n")
+    ouf.write("    word 0\n")
