@@ -1,0 +1,11 @@
+ 10 clear 32767
+ 20 load "aoc02a.bin" code 32768
+ 30 print usr 32768
+ 40 let xhi=peek 33028
+ 50 let xlo=peek 33029
+ 60 let x=xlo+xhi*256
+ 70 let yhi=peek 33030
+ 80 let ylo=peek 33031
+ 90 let y=ylo+yhi*256
+100 print "x=";x;" y=";y
+110 print "xy=";x*y

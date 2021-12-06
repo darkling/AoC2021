@@ -1,0 +1,22 @@
+#!/usr/bin/python3
+
+with open("input.txt", "r") as inf, \
+     open("data.asm", "w") as ouf:
+    ouf.write(":data\n")
+
+    data = []
+    for line in open("input.txt", "r"):
+        d, x = line.strip().split()
+        d = d[0]
+        x = int(x)
+        data += [hex(ord(d)), hex(x)]
+        if len(data) >= 22:
+            ouf.write("    byte ")
+            ouf.write(", ".join(data))
+            ouf.write("\n")
+            data = []
+
+    ouf.write("    byte ")
+    ouf.write(", ".join(data))
+    ouf.write("\n")
+    ouf.write("    byte 0\n")
