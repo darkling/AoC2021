@@ -1,0 +1,26 @@
+  10 print usr {{entry}}
+  20 let %n=6
+  30 let %a={{x}}
+  40 print "  x=";
+  50 gosub 800
+  60 let %a={{y}}
+  70 print '"  y=";
+  80 gosub 800
+  90 let %n=2
+ 100 let %a={{aim}}
+ 110 print '"aim=";
+ 120 gosub 800
+ 130 stop
+ 799 REM *** This routine takes an address in %a and prints the %n bytes following it as a hex number
+ 800 for %i=1 to %n
+ 810 let %v= % peek (a+n-i)
+ 820 let l=%v mod 16
+ 830 let h=%v / 16
+ 840 if h <= 9 then print chr$(h+48);: else print chr$(h+87);
+ 850 if l <= 9 then print chr$(l+48);: else print chr$(l+87);
+ 860 next %i
+ 870 return
+ 990 stop
+1010 clear 32767
+1020 load "aoc02b.bin" code {{entry}}
+1030 goto 10
