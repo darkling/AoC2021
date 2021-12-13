@@ -10,13 +10,15 @@ with open("input.txt", "r") as inf, \
         d = d[0]
         x = int(x)
         data += [hex(ord(d)), hex(x)]
-        if len(data) >= 22:
+        if len(data) >= 16:
             ouf.write("    byte ")
             ouf.write(", ".join(data))
             ouf.write("\n")
             data = []
 
-    ouf.write("    byte ")
-    ouf.write(", ".join(data))
-    ouf.write("\n")
+    if data:
+        ouf.write("    byte ")
+        ouf.write(", ".join(data))
+        ouf.write("\n")
+
     ouf.write("    byte 0\n")

@@ -1,5 +1,6 @@
 $origin &8000
 
+:entry
 	ld hl, 0
 	ld (:x), hl
 	ld (:y), hl
@@ -158,3 +159,5 @@ $origin &8000
 	word 0
 :y
 	word 0
+
+$include "data.asm"
