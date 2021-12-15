@@ -1,0 +1,22 @@
+#!/usr/bin/python3
+
+with open("input.txt", "r") as inf, \
+     open("data.asm", "w") as ouf:
+    ouf.write(":data\n")
+
+    data = []
+    for line in open("input.txt", "r"):
+        value = int("0b"+line.strip(), 2)
+        data.append(f"&{value:04x}")
+        if len(data) >= 8:
+            ouf.write("    word ")
+            ouf.write(", ".join(data))
+            ouf.write("\n")
+            data = []
+
+    if data:
+        ouf.write("    word ")
+        ouf.write(", ".join(data))
+        ouf.write("\n")
+
+    ouf.write("    word 0x0000")
