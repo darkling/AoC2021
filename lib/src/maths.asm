@@ -32,6 +32,7 @@
     push de
     push bc                ; Stack now HL DE BC HL' DE' BC'
     ld de, .hold
+	inc a
     ld b, a                ; Set B and C to the length of the n+1-byte number
     ld c, a
     exx
