@@ -14,73 +14,70 @@
 ;; ----------------------------------------------------------------------
 
 :mula_n_m
-	;; The second register bank needs to be set up with:
-	;;  HL    -- target buffer (BC from input)
-	;;  DE    -- hold buffer (.hold)
-	;;  B = C -- n = size of number in hold buffer
+    ;; The second register bank needs to be set up with:
+    ;;  HL    -- target buffer (BC from input)
+    ;;  DE    -- hold buffer (.hold)
+    ;;  B = C -- n = size of number in hold buffer
 
-	push hl
-	push de
-	push bc
+    push hl
+    push de
+    push bc
 
-	ld a, (de)
-	ld (.loop_counter), a
-	inc de
+    ld a, (de)
+    ld (.loop_counter), a
+    inc de
     push bc                ; Put BC (target) onto the stack: HL DE BC BC
-	exx
-	ex (sp), hl            ; Switch target off the stack into HL: HL DE BC HL'
-	push de
-	push bc                ; Stack now HL DE BC HL' DE' BC'
-	ld de, .hold
-	ld b, a                ; Set B and C to the length of the n-byte number
-	ld c, a
-	exx
+    exx
+    ex (sp), hl            ; Switch target off the stack into HL: HL DE BC HL'
+    push de
+    push bc                ; Stack now HL DE BC HL' DE' BC'
+    ld de, .hold
+    ld b, a                ; Set B and C to the length of the n+1-byte number
+    ld c, a
+    exx
 
-	;; The first register bank needs to be set up with:
-	;;  B  -- m = size of number to multiply
-	;;  HL -- number to multiply in each step
-	;;  DE -- list of numbers to multiply by (plus 1-byte length header)
-	;;  IX -- hold buffer
-	ld a, (hl)
-	ld (.m), a
-	inc hl
-	ld a, (.loop_counter)   ; Instead, could jump into the loop at the ld a,(.m)
-	ld b, a
+    ;; The first register bank needs to be set up with:
+    ;;  B  -- m = size of number to multiply
+    ;;  HL -- number to multiply in each step
+    ;;  DE -- list of numbers to multiply by (plus 1-byte length header)
+    ;;  IX -- hold buffer
+    ld a, (hl)
+    ld (.m), a
+    inc hl
+    ld a, (.loop_counter)   ; Instead, could jump into the loop at the ld a,(.m)
+    ld b, a
 
 .loop
-	ld a, b
-	ld (.loop_counter), a
-	ld a, (.m)
-	ld b, a
-	ld a, (de)
-	ld c, a
-	ld ix, .hold
+    ld a, b
+    ld (.loop_counter), a
+    ld a, (.m)
+    ld b, a
+    ld a, (de)
+    ld c, a
+    ld ix, .hold
 
     call :mul_8n            ; Multiply 
                             ; .hold now contains m+1 bytes of (HL)*C
-	byte 0*16
-	exx
-	call :add_n             ; Add the hold buffer to the target
-	byte 0*16
-	inc hl                  ; Shift the target up by one place
-	ld b, c                 ; Restore B'
-	exx
+    exx
+    call :add_n             ; Add the hold buffer to the target
+    inc hl                  ; Shift the target up by one place
+    ld b, c                 ; Restore B'
+    exx
 
-	inc de                  ; Move to the next byte of DE
-	byte 0*16
-	ld a, (.loop_counter)
-	ld b, a
-	djnz .loop
+    inc de                  ; Move to the next byte of DE
+    ld a, (.loop_counter)
+    ld b, a
+    djnz .loop
 
-	exx
-	pop bc                  ; Restore the second register bank
-	pop de
-	pop hl
-	exx
-	pop bc                  ; Restore the first register bank
-	pop de
-	pop hl
-	ret
+    exx
+    pop bc                  ; Restore the second register bank
+    pop de
+    pop hl
+    exx
+    pop bc                  ; Restore the first register bank
+    pop de
+    pop hl
+    ret
 
 .m
     byte 0
@@ -108,7 +105,7 @@
     push ix
     push hl
     push de
-	push bc
+    push bc
     ld a, 0
 
     scf
@@ -129,7 +126,7 @@
     adc a, 0
     ld (ix+0), a
 
-	pop bc
+    pop bc
     pop de
     pop hl
     pop ix
@@ -151,7 +148,7 @@
 ;; ----------------------------------------------------------------------
 
 :add_n
-	push bc
+    push bc
     push de
     push hl
 
@@ -168,5 +165,5 @@
 
     pop hl
     pop de
-	pop bc
+    pop bc
     ret
